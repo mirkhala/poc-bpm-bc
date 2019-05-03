@@ -1,0 +1,61 @@
+package com.myspace.poc_bancolombia;
+
+import com.myspace.poc_bancolombia.ReglasDO;
+import com.myspace.poc_bancolombia.PQRRequest;
+import com.myspace.poc_bancolombia.ProcessRequest;
+
+rule "Escenario 1" 
+ruleflow-group 'pocBancolombia'
+when
+    $t: ReglasDO(responseCode == 12800987)
+then
+    System.out.println("pocBancolombia 1 :::: Evaluando regla ESCENARIO 1");
+    System.out.println("pocBancolombia 1 :::: ResponseCode: " + $t.getResponseCode());
+    System.out.println("pocBancolombia 1 :::: Entidad: " + $t.getPqrRequest().getEntidad());
+    System.out.println("pocBancolombia 1 :::: Tipo Identificacion: " + $t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setTipoIdentificacion($t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setNumeroIdentificacion($t.getProcessRequest().getNumeroIdentificacion());
+    $t.getPqrRequest().setTipologia($t.getProcessRequest().getTipologia());
+    $t.getPqrRequest().setDescripcionPQR("Escenario 1 - " + $t.getPqrRequest().getDescripcionPQR());
+end 
+
+
+rule "Escenario 2" 
+ruleflow-group 'pocBancolombia'
+when
+    $t: ReglasDO(getPqrWrapper().getPQRs().getPQR().size() > 2)
+then
+    System.out.println("pocBancolombia 2 :::: Evaluando regla ESCENARIO 2");
+    System.out.println("pocBancolombia 2 :::: ResponseCode: " + $t.getResponseCode());
+    System.out.println("pocBancolombia 2 :::: Tipo Identificacion: " + $t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setTipoIdentificacion($t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setNumeroIdentificacion($t.getProcessRequest().getNumeroIdentificacion());
+    $t.getPqrRequest().setTipologia($t.getProcessRequest().getTipologia());
+    $t.getPqrRequest().setDescripcionPQR("Escenario 2 - " + $t.getPqrRequest().getDescripcionPQR());
+end 
+
+rule "Escenario 3" 
+ruleflow-group 'pocBancolombia'
+when
+    $t: ReglasDO(getPqrWrapper().getPQRs().validarFechaCreacion(2019))
+then
+    System.out.println("pocBancolombia 3 :::: Evaluando regla ESCENARIO 3");
+    System.out.println("pocBancolombia 3 :::: ResponseCode: " + $t.getResponseCode());
+    $t.getPqrRequest().setTipoIdentificacion($t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setNumeroIdentificacion($t.getProcessRequest().getNumeroIdentificacion());
+    $t.getPqrRequest().setTipologia($t.getProcessRequest().getTipologia());
+    $t.getPqrRequest().setDescripcionPQR("Escenario 3 - " + $t.getPqrRequest().getDescripcionPQR());
+end 
+
+rule "Escenario 5" 
+ruleflow-group 'pocBancolombia'
+when
+    $t: ReglasDO(getPqrWrapper().getPQRs().validarPQRAbiertos("Queja de servicio","Abierto"))
+then
+    System.out.println("pocBancolombia 5 :::: Evaluando regla ESCENARIO 5");
+    System.out.println("pocBancolombia 5 :::: ResponseCode: " + $t.getResponseCode());
+    $t.getPqrRequest().setTipoIdentificacion($t.getProcessRequest().getTipoIdentificacion());
+    $t.getPqrRequest().setNumeroIdentificacion($t.getProcessRequest().getNumeroIdentificacion());
+    $t.getPqrRequest().setTipologia($t.getProcessRequest().getTipologia());
+    $t.getPqrRequest().setDescripcionPQR("Escenario 5 - " + $t.getPqrRequest().getDescripcionPQR());
+end 
